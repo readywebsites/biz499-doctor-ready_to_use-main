@@ -50,6 +50,8 @@
 	<link href="assets/css/elements.css" rel="stylesheet">
 	<link href="assets/css/rtl.css" rel="stylesheet">
 	<link id="color" href="assets/css/color-schemes/default.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 	
 	<!-- Custom - Theme CSS -->
 	<link rel="stylesheet" type="text/css" href="style.css">
@@ -1002,5 +1004,61 @@
 	<!-- Library - Theme JS -->
 	<script src="assets/js/functions.js"></script>
 	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#contactForm').on('submit', function(e) {
+          e.preventDefault();
+          
+          var name = $('#name').val();
+          var phone = $('#phone').val();
+          var message = $('#message').val();
+		  var email = $('#email').val();
+		  var day = $('#day').val();
+		  var time = $('#time').val();
+  
+          $.ajax({
+            url: 'https://script.google.com/macros/s/AKfycbzxxZDdetaV0cMwXWnI1Ey_5loagKPuHT8yc8_CRkhGtTL8PLL5aR_Zt6DOVLiSBQsJkg/exec', // Replace with your Google Apps Script URL
+            method: 'POST',
+            data: {
+              name: name,
+              phone: phone,
+              message: message,
+			  email:email,
+			  day:day,
+			  time:time,
+            },
+            success: function(response) {
+              toastr.success('Form submitted successfully!');
+              setTimeout(function() {
+                window.location.href = 'http://127.0.0.1:5500/index.html';
+              }, 3000);
+            },
+            error: function() {
+              toastr.error('There was an error submitting the form. Please try again.');
+            }
+          });
+        });
+      });
+  
+      toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-full-width",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+    </script>
+
 </body>
 </html>
