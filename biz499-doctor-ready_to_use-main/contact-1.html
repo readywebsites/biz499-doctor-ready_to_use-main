@@ -359,37 +359,44 @@
 	<script src="assets/js/functions.js"></script>
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        $('#contactForm').on('submit', function(e) {
-          e.preventDefault();
-          
-          var name = $('#name').val();
-          var phone = $('#phone').val();
-          var message = $('#message').val();
+<script>
+  $(document).ready(function() {
+    $('#contactForm').on('submit', function(e) {
+      e.preventDefault();
+      
+      var name = $('#name').val();
+      var phone = $('#phone').val();
+      var message = $('#message').val();
+
+      // Simple form validation
+      if (!name || !phone || !message) {
+        toastr.error('All fields are required.');
+        return; // Stop form submission if validation fails
+      }
   
-          $.ajax({
-            url: 'https://script.google.com/macros/s/AKfycbw0yx-LOArLxo7zn6eQmI_PBfWg8gI7vgTUEzxRWMj6OMnCzt_xhbUCXt9-JF1s25Y1/exec', // Replace with your Google Apps Script URL
-            method: 'POST',
-            data: {
-              name: name,
-              phone: phone,
-              message: message
-            },
-            success: function(response) {
-              toastr.success('Form submitted successfully!');
-              setTimeout(function() {
-                window.location.href = 'http://127.0.0.1:5500/contact.html';
-              }, 3000);
-            },
-            error: function() {
-              toastr.error('There was an error submitting the form. Please try again.');
-            }
-          });
-        });
+      $.ajax({
+        url: 'https://script.google.com/macros/s/AKfycbw0yx-LOArLxo7zn6eQmI_PBfWg8gI7vgTUEzxRWMj6OMnCzt_xhbUCXt9-JF1s25Y1/exec', // Replace with your Google Apps Script URL
+        method: 'POST',
+        data: {
+          name: name,
+          phone: phone,
+          message: message
+        },
+        success: function(response) {
+          toastr.success('Form submitted successfully!');
+          setTimeout(function() {
+            window.location.href = 'http://127.0.0.1:5500/contact.html'; // Replace with your actual redirect URL
+          }, 3000);
+        },
+        error: function(xhr, status, error) {
+          console.error('Error:', status, error);
+          toastr.error('There was an error submitting the form. Please try again.');
+        }
       });
-  
-      toastr.options = {
+    });
+  });
+
+  toastr.options = {
     "closeButton": true,
     "debug": false,
     "newestOnTop": false,
@@ -406,7 +413,6 @@
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
   }
-    </script>
-
+</script>
 </body>
 </html>
